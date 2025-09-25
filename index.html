@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kearifan Lokal WebAR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #ff9800, #f44336);
+      color: white;
+      text-align: center;
+    }
+    header {
+      padding: 20px;
+      background: rgba(0,0,0,0.4);
+    }
+    h1 { margin: 0; }
+    .desa {
+      margin: 30px auto;
+      max-width: 600px;
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    h2 { margin-bottom: 15px; }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      color: #f44336;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: #ffe0b2;
+    }
+    footer {
+      margin-top: 30px;
+      padding: 15px;
+      font-size: 14px;
+      background: rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌏 WebAR Kearifan Lokal Perbatasan</h1>
+    <p>Pilih Desa dan Objek untuk melihat dalam Augmented Reality</p>
+  </header>
+
+  <!-- Desa Sebujit -->
+  <div class="desa">
+    <h2>🏠 Desa Sebujit</h2>
+    <div class="btn-group">
+      <button onclick="location.href='marker.html?desa=sebujit&type=rumah'">Rumah Adat</button>
+      <button onclick="location.href='marker.html?desa=sebujit&type=ritual'">Ritual Nyobeng</button>
+    </div>
+  </div>
+
+  <!-- Desa Jagoi Babang -->
+  <div class="desa">
+    <h2>🏠 Desa Jagoi Babang</h2>
+    <div class="btn-group">
+      <button onclick="location.href='marker.html?desa=jagoi&type=rumah'">Rumah Adat</button>
+      <button onclick="location.href='marker.html?desa=jagoi&type=ritual'">Ritual Gawia Sowa</button>
+    </div>
+  </div>
+
+  <footer>
+    WebAR Kearifan Lokal © 2025 — Desa Sebujit & Jagoi Babang
+  </footer>
+</body>
+</html>
