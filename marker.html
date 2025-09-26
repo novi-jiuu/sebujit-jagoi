@@ -1,145 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>WebAR Marker</title>
-  <!-- A-Frame + AR.js -->
+  <title>WebAR Markerless</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 
   <style>
     body { margin: 0; overflow: hidden; }
-    #ui {
+    #menu {
       position: fixed;
-      bottom: 20px;
-      left: 50%;
+      top: 10px; left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      gap: 10px;
+      background: rgba(0,0,0,0.6);
+      padding: 10px;
+      border-radius: 8px;
+      display: flex; gap: 10px; flex-wrap: wrap;
     }
     button {
-      padding: 10px 15px;
+      padding: 8px 12px;
       border: none;
       border-radius: 6px;
       background: #ff9800;
       color: white;
-      font-weight: bold;
       cursor: pointer;
+      font-weight: bold;
     }
+    button:hover { background: #ffa733; }
   </style>
 </head>
 <body>
+  <!-- Menu Pilihan -->
+  <div id="menu">
+    <button onclick="showModel('rumah_sebujit')">Sebujit Rumah</button>
+    <button onclick="showModel('nyobeng_sebujit')">Sebujit Ritual</button>
+    <button onclick="showModel('rumah_jagoi')">Jagoi Rumah</button>
+    <button onclick="showModel('gawia_jagoi')">Jagoi Ritual</button>
+  </div>
+
   <a-scene
-    embedded
     vr-mode-ui="enabled: false"
-    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true;">
     
-    <!-- Asset Loading -->
     <a-assets>
       <!-- Models -->
-      <a-asset-item id="rumah-sebujit" src="assets/rumah_sebujit.glb"></a-asset-item>
-      <a-asset-item id="nyobeng-sebujit" src="assets/nyobeng_sebujit.glb"></a-asset-item>
-      <a-asset-item id="rumah-jagoi" src="assets/rumah_jagoi.glb"></a-asset-item>
-      <a-asset-item id="gawia-jagoi" src="assets/gawia_jagoi.glb"></a-asset-item>
-
-      <!-- Audio -->
-      <audio id="narasi-sebujit-rumah" src="assets/narasi_rumah_sebujit.mp3"></audio>
-      <audio id="narasi-sebujit-ritual" src="assets/narasi_nyobeng.mp3"></audio>
-      <audio id="narasi-jagoi-rumah" src="assets/narasi_rumah_jagoi.mp3"></audio>
-      <audio id="narasi-jagoi-ritual" src="assets/narasi_gawia.mp3"></audio>
-      <audio id="musik-dayak" src="assets/dayak.mp3"></audio>
+      <a-asset-item id="rumah_sebujit" src="assets/rumah_sebujit.glb"></a-asset-item>
+      <a-asset-item id="nyobeng_sebujit" src="assets/nyobeng_sebujit.glb"></a-asset-item>
+      <a-asset-item id="rumah_jagoi" src="assets/rumah_jagoi.glb"></a-asset-item>
+      <a-asset-item id="gawia_jagoi" src="assets/gawia_jagoi.glb"></a-asset-item>
     </a-assets>
 
-    <!-- Marker Sebujit (Rumah) -->
-    <a-marker type="pattern" url="assets/marker_rumah_sebujit.patt" emitevents="true" id="marker-sebujit-rumah">
-      <a-entity gltf-model="#rumah-sebujit" scale="0.4 0.4 0.4"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
-      </a-entity>
-    </a-marker>
-
-    <!-- Marker Sebujit (Ritual Nyobeng) -->
-    <a-marker type="pattern" url="assets/marker_ritual_sebujit.patt" emitevents="true" id="marker-sebujit-ritual">
-      <a-entity gltf-model="#nyobeng-sebujit" scale="0.4 0.4 0.4"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
-      </a-entity>
-    </a-marker>
-
-    <!-- Marker Jagoi (Rumah) -->
-    <a-marker type="pattern" url="assets/marker_rumah_jagoi.patt" emitevents="true" id="marker-jagoi-rumah">
-      <a-entity gltf-model="#rumah-jagoi" scale="0.4 0.4 0.4"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
-      </a-entity>
-    </a-marker>
-
-    <!-- Marker Jagoi (Ritual Gawia Sowa) -->
-    <a-marker type="pattern" url="assets/marker_ritual_jagoi.patt" emitevents="true" id="marker-jagoi-ritual">
-      <a-entity gltf-model="#gawia-jagoi" scale="0.4 0.4 0.4"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
-      </a-entity>
-    </a-marker>
+    <!-- Container untuk model -->
+    <a-entity id="model-container" position="0 0 -2"></a-entity>
 
     <!-- Kamera -->
     <a-entity camera></a-entity>
   </a-scene>
 
-  <!-- Tombol UI -->
-  <div id="ui">
-    <button onclick="window.location.href='index.html'">⬅ Kembali</button>
-  </div>
-
-  <!-- Script Audio -->
   <script>
-    const musikDayak = document.getElementById("musik-dayak");
+    function showModel(id) {
+      const container = document.getElementById("model-container");
+      container.setAttribute("gltf-model", "#" + id);
 
-    const narasiSebujitRumah = document.getElementById("narasi-sebujit-rumah");
-    const narasiSebujitRitual = document.getElementById("narasi-sebujit-ritual");
-    const narasiJagoiRumah = document.getElementById("narasi-jagoi-rumah");
-    const narasiJagoiRitual = document.getElementById("narasi-jagoi-ritual");
+      // Atur scale sesuai kategori
+      if (id.includes("rumah")) {
+        container.setAttribute("scale", "0.4 0.4 0.4");
+      } else {
+        container.setAttribute("scale", "5 5 5");
+      }
 
-    const markerSebujitRumah = document.getElementById("marker-sebujit-rumah");
-    const markerSebujitRitual = document.getElementById("marker-sebujit-ritual");
-    const markerJagoiRumah = document.getElementById("marker-jagoi-rumah");
-    const markerJagoiRitual = document.getElementById("marker-jagoi-ritual");
-
-    // Marker Sebujit Rumah
-    markerSebujitRumah.addEventListener("markerFound", () => {
-      musikDayak.play();
-      narasiSebujitRumah.play();
-    });
-    markerSebujitRumah.addEventListener("markerLost", () => {
-      musikDayak.pause(); musikDayak.currentTime = 0;
-      narasiSebujitRumah.pause(); narasiSebujitRumah.currentTime = 0;
-    });
-
-    // Marker Sebujit Ritual
-    markerSebujitRitual.addEventListener("markerFound", () => {
-      musikDayak.play();
-      narasiSebujitRitual.play();
-    });
-    markerSebujitRitual.addEventListener("markerLost", () => {
-      musikDayak.pause(); musikDayak.currentTime = 0;
-      narasiSebujitRitual.pause(); narasiSebujitRitual.currentTime = 0;
-    });
-
-    // Marker Jagoi Rumah
-    markerJagoiRumah.addEventListener("markerFound", () => {
-      musikDayak.play();
-      narasiJagoiRumah.play();
-    });
-    markerJagoiRumah.addEventListener("markerLost", () => {
-      musikDayak.pause(); musikDayak.currentTime = 0;
-      narasiJagoiRumah.pause(); narasiJagoiRumah.currentTime = 0;
-    });
-
-    // Marker Jagoi Ritual
-    markerJagoiRitual.addEventListener("markerFound", () => {
-      musikDayak.play();
-      narasiJagoiRitual.play();
-    });
-    markerJagoiRitual.addEventListener("markerLost", () => {
-      musikDayak.pause(); musikDayak.currentTime = 0;
-      narasiJagoiRitual.pause(); narasiJagoiRitual.currentTime = 0;
-    });
+      // Animasi rotasi
+      container.setAttribute("animation",
+        "property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear"
+      );
+    }
   </script>
 </body>
 </html>
