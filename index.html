@@ -2,91 +2,112 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Kearifan Lokal WebAR</title>
+  <title>WebAR Kearifan Lokal</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0; padding: 0;
-      background: linear-gradient(135deg, #ff9800, #f44336);
-      color: white;
-      text-align: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0099cc, #66ccff);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     header {
-      padding: 20px;
-      background: rgba(0,0,0,0.4);
+      text-align: center;
+      padding: 25px 15px;
+      background: rgba(0,0,0,0.25);
     }
-    h1 { margin: 0; }
-    .desa, .markerless {
-      margin: 30px auto;
-      max-width: 600px;
-      background: rgba(0,0,0,0.2);
-      padding: 20px;
-      border-radius: 12px;
+    header h1 {
+      margin: 0;
+      font-size: 28px;
     }
-    h2 { margin-bottom: 15px; }
-    .btn-group {
+    header p {
+      margin: 8px 0 0;
+      font-size: 15px;
+    }
+    main {
+      flex: 1;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
+      padding: 20px;
+      gap: 25px;
+    }
+    .desa {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .desa h2 {
+      margin: 0 0 15px;
+      font-size: 22px;
+    }
+    .btn-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
     }
     button {
-      padding: 12px 18px;
+      padding: 12px 16px;
       border: none;
       border-radius: 8px;
-      background: white;
-      color: #f44336;
+      font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.2s, opacity 0.2s;
     }
     button:hover {
       transform: scale(1.05);
-      background: #ffe0b2;
+      opacity: 0.9;
     }
+    .marker { background: #ff9800; color: #fff; }
+    .markerless { background: #4caf50; color: #fff; }
     footer {
-      margin-top: 30px;
+      text-align: center;
       padding: 15px;
+      background: rgba(0,0,0,0.25);
       font-size: 14px;
-      background: rgba(0,0,0,0.4);
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>🌏 WebAR Kearifan Lokal Perbatasan</h1>
-    <p>Pilih Desa dan Objek untuk melihat dalam Augmented Reality</p>
+    <h1>✨ WebAR Kearifan Lokal ✨</h1>
+    <p>Jelajahi Rumah Adat & Ritual Budaya dengan Augmented Reality</p>
   </header>
 
-  <!-- Desa Sebujit -->
-  <div class="desa">
-    <h2>🏠 Desa Sebujit</h2>
-    <div class="btn-group">
-      <button onclick="location.href='marker.html?desa=sebujit&type=rumah'">Rumah Adat</button>
-      <button onclick="location.href='marker.html?desa=sebujit&type=ritual'">Ritual Nyobeng</button>
+  <main>
+    <!-- Desa Sebujit -->
+    <div class="desa">
+      <h2>🏡 Desa Sebujit</h2>
+      <div class="btn-group">
+        <button class="marker" onclick="location.href='marker.html?desa=sebujit&type=rumah'">📷 Marker - Rumah</button>
+        <button class="marker" onclick="location.href='marker.html?desa=sebujit&type=ritual'">📷 Marker - Nyobeng</button>
+        <button class="markerless" onclick="location.href='markerless.html?desa=sebujit&type=rumah'">🌍 Markerless - Rumah</button>
+        <button class="markerless" onclick="location.href='markerless.html?desa=sebujit&type=ritual'">🌍 Markerless - Nyobeng</button>
+      </div>
     </div>
-  </div>
 
-  <!-- Desa Jagoi Babang -->
-  <div class="desa">
-    <h2>🏠 Desa Jagoi Babang</h2>
-    <div class="btn-group">
-      <button onclick="location.href='marker.html?desa=jagoi&type=rumah'">Rumah Adat</button>
-      <button onclick="location.href='marker.html?desa=jagoi&type=ritual'">Ritual Gawia Sowa</button>
+    <!-- Desa Jagoi Babang -->
+    <div class="desa">
+      <h2>🏡 Desa Jagoi Babang</h2>
+      <div class="btn-group">
+        <button class="marker" onclick="location.href='marker.html?desa=jagoi&type=rumah'">📷 Marker - Rumah</button>
+        <button class="marker" onclick="location.href='marker.html?desa=jagoi&type=ritual'">📷 Marker - Gawia Sowa</button>
+        <button class="markerless" onclick="location.href='markerless.html?desa=jagoi&type=rumah'">🌍 Markerless - Rumah</button>
+        <button class="markerless" onclick="location.href='markerless.html?desa=jagoi&type=ritual'">🌍 Markerless - Gawia Sowa</button>
+      </div>
     </div>
-  </div>
-
-  <!-- Mode Markerless -->
-  <div class="markerless">
-    <h2>📱 Mode Markerless</h2>
-    <p>Lihat semua objek tanpa perlu marker, cukup pilih model dan arahkan kamera ke permukaan datar.</p>
-    <div class="btn-group">
-      <button onclick="location.href='markerless.html'">Mulai Markerless AR</button>
-    </div>
-  </div>
+  </main>
 
   <footer>
-    WebAR Kearifan Lokal © 2025 — Desa Sebujit & Jagoi Babang
+    🌏 WebAR Kearifan Lokal © 2025 — Desa Sebujit & Desa Jagoi Babang
   </footer>
 </body>
 </html>
