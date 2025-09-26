@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <title>WebAR Markerless</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/studio-backend/master/packages/aframe/build/aframe-ar-nft.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 
   <style>
     body { margin: 0; overflow: hidden; }
@@ -16,7 +15,8 @@
       background: rgba(0,0,0,0.6);
       padding: 10px;
       border-radius: 8px;
-      display: flex; gap: 10px;
+      display: flex; gap: 10px; flex-wrap: wrap;
+      z-index: 10;
     }
     button {
       padding: 8px 12px;
@@ -25,10 +25,13 @@
       background: #ff9800;
       color: white;
       cursor: pointer;
+      font-weight: bold;
     }
+    button:hover { background: #ffa733; }
   </style>
 </head>
 <body>
+  <!-- Menu Pilihan -->
   <div id="menu">
     <button onclick="showModel('rumah_sebujit')">Sebujit Rumah</button>
     <button onclick="showModel('nyobeng_sebujit')">Sebujit Ritual</button>
@@ -39,27 +42,73 @@
   <a-scene
     vr-mode-ui="enabled: false"
     embedded
-    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true;">
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
     
     <a-assets>
+      <!-- Models -->
       <a-asset-item id="rumah_sebujit" src="assets/rumah_sebujit.glb"></a-asset-item>
       <a-asset-item id="nyobeng_sebujit" src="assets/nyobeng_sebujit.glb"></a-asset-item>
       <a-asset-item id="rumah_jagoi" src="assets/rumah_jagoi.glb"></a-asset-item>
       <a-asset-item id="gawia_jagoi" src="assets/gawia_jagoi.glb"></a-asset-item>
+
+      <!-- Audio -->
+      <audio id="musik-dayak" src="assets/dayak.mp3"></audio>
+      <audio id="narasi-rumah-sebujit" src="assets/narasi_rumah_sebujit.mp3"></audio>
+      <audio id="narasi-ritual-sebujit" src="assets/narasi_nyobeng.mp3"></audio>
+      <audio id="narasi-rumah-jagoi" src="assets/narasi_rumah_jagoi.mp3"></audio>
+      <audio id="narasi-ritual-jagoi" src="assets/narasi_gawia.mp3"></audio>
     </a-assets>
 
-    <!-- Tempat model muncul -->
+    <!-- Container untuk model -->
     <a-entity id="model-container" position="0 0 -2"></a-entity>
 
+    <!-- Kamera -->
     <a-entity camera></a-entity>
   </a-scene>
 
   <script>
+    const musik = document.getElementById("musik-dayak");
+    const narasi = {
+      rumah_sebujit: document.getElementById("narasi-rumah-sebujit"),
+      nyobeng_sebujit: document.getElementById("narasi-ritual-sebujit"),
+      rumah_jagoi: document.getElementById("narasi-rumah-jagoi"),
+      gawia_jagoi: document.getElementById("narasi-ritual-jagoi"),
+    };
+
+    let currentNarration = null;
+
+    function stopAudio() {
+      musik.pause(); musik.currentTime = 0;
+      if (currentNarration) {
+        currentNarration.pause();
+        currentNarration.currentTime = 0;
+      }
+    }
+
     function showModel(id) {
+      // Reset audio
+      stopAudio();
+
+      // Ganti model
       const container = document.getElementById("model-container");
       container.setAttribute("gltf-model", "#" + id);
-      container.setAttribute("scale", "0.5 0.5 0.5");
-      container.setAttribute("animation", "property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear");
+
+      // Atur scale sesuai kategori
+      if (id.includes("rumah")) {
+        container.setAttribute("scale", "0.4 0.4 0.4");
+      } else {
+        container.setAttribute("scale", "5 5 5");
+      }
+
+      // Animasi rotasi
+      container.setAttribute("animation",
+        "property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear"
+      );
+
+      // Mainkan audio
+      musik.play();
+      currentNarration = narasi[id];
+      if (currentNarration) currentNarration.play();
     }
   </script>
 </body>
